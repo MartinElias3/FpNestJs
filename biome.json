@@ -1,0 +1,75 @@
+{
+    "$schema": "https://biomejs.dev/schemas/1.6.3/schema.json",
+    "organizeImports": {
+      "enabled": true
+    },
+    "files": {
+      "ignore": [
+        "build/",
+        "coverage/",
+        "dist-client/",
+        "dist/",
+        "node_modules/",
+        "*.yaml",
+        "./tsconfig.shareable.json",
+        "src/infrastructure/sdk/internal.sdk.ts",
+        "src/presentation/graphql/types/partner/index.ts"
+      ]
+    },
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "lineWidth": 100,
+      "lineEnding": "lf",
+      "formatWithErrors": false
+    },
+    "linter": {
+      "enabled": true,
+      "rules": {
+        "recommended": true,
+        "complexity": {
+          "useLiteralKeys": "off"
+        },
+        "style": {
+          "noNonNullAssertion": "off",
+          "useImportType": "off",
+          "useNodejsImportProtocol": "error"
+        }
+      }
+    },
+    "overrides": [
+      {
+        "include": ["*.model.ts"],
+        "linter": {
+          "rules": {
+            "style": {
+              "noInferrableTypes": "off"
+            }
+          }
+        }
+      }
+    ],
+    "javascript": {
+      "formatter": {
+        "arrowParentheses": "always",
+        "jsxQuoteStyle": "double",
+        "semicolons": "always",
+        "trailingComma": "all",
+        "quoteProperties": "asNeeded",
+        "bracketSpacing": true,
+        "bracketSameLine": false,
+        "quoteStyle": "double"
+      },
+      "parser": {
+        "unsafeParameterDecoratorsEnabled": true
+      }
+    },
+    "vcs": {
+      "enabled": true,
+      "clientKind": "git",
+      "useIgnoreFile": true,
+      "defaultBranch": "origin/master"
+    }
+  }
+  
