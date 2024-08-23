@@ -1,0 +1,12 @@
+type Query {
+  _empty: String # Add a dummy field to define the base Query type
+}
+extend type Query {
+  test: Test!
+}
+
+type Test {
+    test1: String!
+    test2: String!
+    test3: String!
+}
