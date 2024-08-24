@@ -1,0 +1,26 @@
+type Query {
+  hello: String # A simple query that returns a static string
+}
+
+type Mutation {
+  sayHello(input: SayHelloInput!): SayHelloPayload
+}
+
+input SayHelloInput {
+ name: String!
+}
+
+union SayHelloPayload =
+  | SayHelloSuccessPayload
+  | SayHelloRejection
+
+
+type SayHelloSuccessPayload {
+  message: String!
+}
+
+
+type SayHelloRejection {
+  message: String!
+}
+
