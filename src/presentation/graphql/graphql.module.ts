@@ -3,9 +3,9 @@ import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
 import { InfrastructureModule } from "src/infrastructure/infrastructure.module";
 import { generateGraphQLModuleConfiguration } from "./helper.graphql";
-import { TestResolver } from "./resolvers/queries/test.resolver";
+import { SayHelloResolver } from "./resolvers/mutations/test.resolver";
 
-const resolvers = [TestResolver];
+const resolvers = [SayHelloResolver];
 
 const graphQLModuleConfiguration = generateGraphQLModuleConfiguration({
   path: "/graphql",

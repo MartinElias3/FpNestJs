@@ -7,6 +7,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -16,10 +17,36 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  sayHello?: Maybe<SayHelloPayload>;
+};
+
+
+export type MutationSayHelloArgs = {
+  input: SayHelloInput;
+};
+
 export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']['output']>;
   test: Test;
+};
+
+export type SayHelloInput = {
+  name: Scalars['String']['input'];
+};
+
+export type SayHelloPayload = SayHelloRejection | SayHelloSuccessPayload;
+
+export type SayHelloRejection = {
+  __typename?: 'SayHelloRejection';
+  message: Scalars['String']['output'];
+};
+
+export type SayHelloSuccessPayload = {
+  __typename?: 'SayHelloSuccessPayload';
+  message: Scalars['String']['output'];
 };
 
 export type Test = {
@@ -96,12 +123,21 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
+/** Mapping of union types */
+export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
+  SayHelloPayload: ( SayHelloRejection ) | ( SayHelloSuccessPayload );
+};
 
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
+  SayHelloInput: SayHelloInput;
+  SayHelloPayload: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['SayHelloPayload']>;
+  SayHelloRejection: ResolverTypeWrapper<SayHelloRejection>;
+  SayHelloSuccessPayload: ResolverTypeWrapper<SayHelloSuccessPayload>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Test: ResolverTypeWrapper<Test>;
 };
@@ -109,14 +145,37 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
+  Mutation: {};
   Query: {};
+  SayHelloInput: SayHelloInput;
+  SayHelloPayload: ResolversUnionTypes<ResolversParentTypes>['SayHelloPayload'];
+  SayHelloRejection: SayHelloRejection;
+  SayHelloSuccessPayload: SayHelloSuccessPayload;
   String: Scalars['String']['output'];
   Test: Test;
+};
+
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  sayHello?: Resolver<Maybe<ResolversTypes['SayHelloPayload']>, ParentType, ContextType, RequireFields<MutationSayHelloArgs, 'input'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   test?: Resolver<ResolversTypes['Test'], ParentType, ContextType>;
+};
+
+export type SayHelloPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['SayHelloPayload'] = ResolversParentTypes['SayHelloPayload']> = {
+  __resolveType: TypeResolveFn<'SayHelloRejection' | 'SayHelloSuccessPayload', ParentType, ContextType>;
+};
+
+export type SayHelloRejectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['SayHelloRejection'] = ResolversParentTypes['SayHelloRejection']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type SayHelloSuccessPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['SayHelloSuccessPayload'] = ResolversParentTypes['SayHelloSuccessPayload']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type TestResolvers<ContextType = any, ParentType extends ResolversParentTypes['Test'] = ResolversParentTypes['Test']> = {
@@ -127,7 +186,11 @@ export type TestResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type Resolvers<ContextType = any> = {
+  Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  SayHelloPayload?: SayHelloPayloadResolvers<ContextType>;
+  SayHelloRejection?: SayHelloRejectionResolvers<ContextType>;
+  SayHelloSuccessPayload?: SayHelloSuccessPayloadResolvers<ContextType>;
   Test?: TestResolvers<ContextType>;
 };
 
