@@ -1,1 +1,1 @@
-export const TASK_CLIENT = "task-client";
+export const NAME_PROVIDER = "name-provider";
