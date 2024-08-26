@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { SequelizeModule } from "@nestjs/sequelize";
 
 import { models } from "models/models";
-import { TaskProviders } from "./task/providers";
+import { NameProviders } from "./names/providers";
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import { TaskProviders } from "./task/providers";
     }),
   ],
   controllers: [],
-  providers: [...TaskProviders],
-  exports: [...TaskProviders],
+  providers: [...NameProviders],
+  exports: [...NameProviders],
 })
 export class InfrastructureModule {}
